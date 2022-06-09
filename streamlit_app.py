@@ -61,8 +61,8 @@ if st.button("Get fruit load list"):
   st.header("The fruit list:")
   st.dataframe(my_data_rows)
 
+fruit_choice_add = st.text_input('What fruit would you like to add?', 'pineapple')
 if st.button("Add a fruit to the list"):
-  fruit_choice_add = st.text_input('What fruit would you like to add?', 'pineapple')
   response = insert_row_snowflake(fruit_choice_add, 'fruit_load_list')
   st.text(response)
  # st.write('Thanks for adding', fruit_choice_add)
