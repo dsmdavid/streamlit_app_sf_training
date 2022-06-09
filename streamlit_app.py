@@ -21,15 +21,17 @@ st.dataframe(my_fruit_list.loc[selected_fruits])
 
 #Fruityvice response
 st.header('Fruityvice Request')
-fruit_choice = st.text_input('What fruit would you like info about?', 'kiwi')
-st.write('User entered', fruit_choice)
-
-fr_response = requests.get("https://fruityvice.com/api/fruit/" + str(fruit_choice))
-
-#json: st.text(fr_response.json())
-
-fr_norm = pd.json_normalize(fr_response.json())
-st.dataframe(fr_norm)
+try:
+  fruit_choice = st.text_input('What fruit would you like info about?', 'kiwi')
+  if not fruit_choice:
+    st.error("Please, select a fruit to get info")
+   else:
+    st.write('User entered', fruit_choice)
+    fr_response = requests.get("https://fruityvice.com/api/fruit/" + str(fruit_choice))
+    fr_norm = pd.json_normalize(fr_response.json())
+    st.dataframe(fr_norm)
+except URLError as e:
+  st.error()
 
 
 # debug
