@@ -16,8 +16,13 @@ selected_fruits = st.multiselect("Pick some fruits:", list(my_fruit_list.index),
 
 st.dataframe(my_fruit_list.loc[selected_fruits])
 
-fr_response = requests.get("https://fruityvice.com/api/fruit/" + "kiwi")
+#Fruityvice response
 st.header('Fruityvice Request')
+fruit_choice = st.text_input('What fruit would you like info about?', 'kiwi')
+st.write('User entered', fruit_choice)
+
+fr_response = requests.get("https://fruityvice.com/api/fruit/" + str(fruit_choice))
+
 st.text(fr_response.json())
 
 fr_norm = pd.json_normalize(fr_response.json())
