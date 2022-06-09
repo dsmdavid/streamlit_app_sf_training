@@ -38,3 +38,8 @@ my_cur.execute("SELECT CURRENT_USER(), CURRENT_ACCOUNT(), CURRENT_REGION()")
 my_data_row = my_cur.fetchone()
 st.text("Hello from Snowflake:")
 st.text(my_data_row)
+
+my_cur.execute("select * from fruit_load_list")
+my_data_row = my_cur.fetchone()
+st.text("The fruit list:")
+st.text(my_data_row)
