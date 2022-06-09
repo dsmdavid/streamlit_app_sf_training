@@ -23,7 +23,7 @@ st.write('User entered', fruit_choice)
 
 fr_response = requests.get("https://fruityvice.com/api/fruit/" + str(fruit_choice))
 
-st.text(fr_response.json())
+#json: st.text(fr_response.json())
 
 fr_norm = pd.json_normalize(fr_response.json())
 st.dataframe(fr_norm)
