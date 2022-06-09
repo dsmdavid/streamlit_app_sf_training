@@ -11,10 +11,22 @@ def get_fruityvice_data(selected_fruit):
   fr_norm = pd.json_normalize(fr_response.json())
   return fr_norm
 
+def get_connection():
+  my_cnx = snowflake.connector.connect(**st.secrets["snowflake"])
+  return my_cnx
+
 def get_fruit_load_list():
+  my_cnx = get_connection()
   with my_cnx.cursor() as my_cur:
     my_cur.execute("select * from fruit_load_list")
     return my_cur.fetchall()
+def insert_row_snowflake(row_val, table):
+  my_cnx = get_connection()
+  with my_cnx.cursor() as my_cur:
+    my_cur.execute(f"insert into {table} values ('{row_val}')")
+    return f"Thanks for adding {row_val} to table \t\t{table}"
+  
+
 
 st.title("Let's open a Diner")
 
@@ -45,16 +57,14 @@ except URLError as e:
 
 
 if st.button("Get fruit load list"):
-  my_cnx = snowflake.connector.connect(**st.secrets["snowflake"])
   my_data_rows = get_fruit_load_list()
   st.header("The fruit list:")
   st.dataframe(my_data_rows)
 
+if st.button("Add a fruit to the list"):
+  fruit_choice_add = st.text_input('What fruit would you like to add?', 'pineapple')
+  response = insert_row_snowflake(fruit_choice_add, 'fruit_load_list')
+  st.text(response)
+ # st.write('Thanks for adding', fruit_choice_add)
 
-# debug
-st.stop()
-
-fruit_choice_add = st.text_input('What fruit would you like to add?', 'pineapple')
-st.write('Thanks for adding', fruit_choice_add)
-
-my_cur.execute("insert into fruit_load_list values ('from streamlit')")
+ # my_cur.execute("insert into fruit_load_list values ('from streamlit')")
